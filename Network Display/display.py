@@ -52,21 +52,21 @@ def display_network(switches, connections):
     z_repeaters = []  # z-coordinates of repeaters
 
     # we need to create lists that contain the starting and ending coordinates of each connection
-    x_direct_connections = []  # x-coordinates of src and dest nodes for direct connections
-    y_direct_connections = []  # y-coordinates of src and dest nodes for direct connections
-    z_direct_connections = []  # z-coordinates of src and dest nodes for direct connections
+    x_direct_connections = []  # x-coordinates of src and dest switches for direct connections
+    y_direct_connections = []  # y-coordinates of src and dest switches for direct connections
+    z_direct_connections = []  # z-coordinates of src and dest switches for direct connections
 
-    x_indirect_connections = [[], []]  # x-coordinates of src and dest nodes for indirect connections
-    y_indirect_connections = [[], []]  # y-coordinates of src and dest nodes for indirect connections
-    z_indirect_connections = [[], []]  # z-coordinates of src and dest nodes for indirect connections
+    x_indirect_connections = []  # x-coordinates of src and dest nodes for indirect connections
+    y_indirect_connections = []  # y-coordinates of src and dest nodes for indirect connections
+    z_indirect_connections = []  # z-coordinates of src and dest nodes for indirect connections
 
-    # x_indirect_connections_1 = []  # x-coordinates of src and dest nodes for indirect connections 1
-    # y_indirect_connections_1 = []  # y-coordinates of src and dest nodes for indirect connections 1
-    # z_indirect_connections_1 = []  # z-coordinates of src and dest nodes for indirect connections 1
+    colors_for_indirect_connections = ['green', 'blue']
+    variety_of_indirect_connections = len(colors_for_indirect_connections)
 
-    # x_indirect_connections_2 = []  # x-coordinates of src and dest nodes for indirect connections 2
-    # y_indirect_connections_2 = []  # y-coordinates of src and dest nodes for indirect connections 2
-    # z_indirect_connections_2 = []  # z-coordinates of src and dest nodes for indirect connections 2
+    for sz in range(variety_of_indirect_connections):
+        x_indirect_connections.append([])
+        y_indirect_connections.append([])
+        z_indirect_connections.append([])
 
     # create lists holding midpoints that we will use to anchor text
     # x_midpoint_connections = []
@@ -91,11 +91,11 @@ def display_network(switches, connections):
         number_of_repeaters = connection_data[2]
 
         x_src_switch = x_switches[src_switch_id]
-        x_dest_switch = x_switches[dest_switch_id]
         y_src_switch = y_switches[src_switch_id]
-
-        y_dest_switch = y_switches[dest_switch_id]
         z_src_switch = z_switches[src_switch_id]
+
+        x_dest_switch = x_switches[dest_switch_id]
+        y_dest_switch = y_switches[dest_switch_id]
         z_dest_switch = z_switches[dest_switch_id]
 
         if number_of_repeaters != 0:
@@ -125,23 +125,17 @@ def display_network(switches, connections):
 
                 # Create connection b/w curr_node and prev_node
                 x_coords_start_end_of_indirect_connection = [x_prev_node, x_curr_node, None]
-                x_indirect_connections[itr % 2] += x_coords_start_end_of_indirect_connection
+                x_indirect_connections[itr % variety_of_indirect_connections] += x_coords_start_end_of_indirect_connection
 
                 y_coords_start_end_of_indirect_connection = [y_prev_node, y_curr_node, None]
-                y_indirect_connections[itr % 2] += y_coords_start_end_of_indirect_connection
+                y_indirect_connections[itr % variety_of_indirect_connections] += y_coords_start_end_of_indirect_connection
 
                 z_coords_start_end_of_indirect_connection = [z_prev_node, z_curr_node, None]
-                z_indirect_connections[itr % 2] += z_coords_start_end_of_indirect_connection
+                z_indirect_connections[itr % variety_of_indirect_connections] += z_coords_start_end_of_indirect_connection
 
                 x_prev_node = x_curr_node
                 y_prev_node = y_curr_node
                 z_prev_node = z_curr_node
-
-            # for itr in range(1, number_of_repeaters+1):
-            #     x_repeaters.append(x_src_switch + itr * x_diff_adder)
-            #     y_repeaters.append(y_src_switch + itr * y_diff_adder)
-            #     z_repeaters.append(z_src_switch + itr * z_diff_adder)
-            #     repeater_labels.append(f'Repeater ID = {src_switch_id}_{dest_switch_id}_{itr}')
 
         else:
             x_coords_start_end_of_direct_connection = [x_src_switch, x_dest_switch, None]
@@ -156,40 +150,11 @@ def display_network(switches, connections):
         # x_midpoint_connections.append(0.5 * (x_src_switch + x_dest_switch))
         # y_midpoint_connections.append(0.5 * (y_src_switch + y_dest_switch))
         # z_midpoint_connections.append(0.5 * (z_src_switch + z_dest_switch))
-
+        #
         # midpoint_labels.append(f'Number of Repeaters={connection_data[2]}')
 
-    # trace_weights = go.Scatter3d(x=x_midpoint_edges, y=y_midpoint_edges, z=z_midpoint_edges,
-    #                              mode='markers',
-    #                              marker=dict(color='rgb(255,0,0)', size=1),
-    #                              # set the same color as for the edge lines
-    #                              text=midpoint_labels, hoverinfo='text')
-
-    # create a trace for the direct_connections
-    trace_direct_connections = go.Scatter3d(
-        x=x_direct_connections,
-        y=y_direct_connections,
-        z=z_direct_connections,
-        mode='lines',
-        line=dict(color='black', width=3),
-        hoverinfo='none')
-
-    # create a trace for the indirect_connections
-    trace_indirect_connections_0 = go.Scatter3d(
-        x=x_indirect_connections[0],
-        y=y_indirect_connections[0],
-        z=z_indirect_connections[0],
-        mode='lines',
-        line=dict(color='green', width=3),
-        hoverinfo='none')
-
-    trace_indirect_connections_1 = go.Scatter3d(
-        x=x_indirect_connections[1],
-        y=y_indirect_connections[1],
-        z=z_indirect_connections[1],
-        mode='lines',
-        line=dict(color='blue', width=3),
-        hoverinfo='none')
+    # Include the traces we want to plot and create a figure
+    data = []
 
     # create a trace for the switches
     trace_switches = go.Scatter3d(
@@ -203,6 +168,8 @@ def display_network(switches, connections):
                     color='red')
     )
 
+    data.append(trace_switches)
+
     # create a trace for the repeaters
     trace_repeaters = go.Scatter3d(
         x=x_repeaters,
@@ -215,18 +182,44 @@ def display_network(switches, connections):
                     color='black')
     )
 
-    # Include the traces we want to plot and create a figure
-    data = []
-    data.append(trace_direct_connections)
-    data.append(trace_switches)
     data.append(trace_repeaters)
-    data.append(trace_indirect_connections_0)
-    data.append(trace_indirect_connections_1)
+
+    # trace_weights = go.Scatter3d(x=x_midpoint_edges, y=y_midpoint_edges, z=z_midpoint_edges,
+    #                              mode='markers',
+    #                              marker=dict(color='rgb(255,0,0)', size=1),
+    #                              # set the same color as for the edge lines
+    #                              text=midpoint_labels, hoverinfo='text')
+
     # data.append(trace_weights)
+
+    # create a trace for the direct_connections
+    trace_direct_connections = go.Scatter3d(
+        x=x_direct_connections,
+        y=y_direct_connections,
+        z=z_direct_connections,
+        mode='lines',
+        line=dict(color='black', width=3),
+        hoverinfo='none')
+
+    data.append(trace_direct_connections)
+
+    # create a trace for the indirect_connections
+    for itr in range(variety_of_indirect_connections):
+
+        trace_indirect_connections = go.Scatter3d(
+            x=x_indirect_connections[itr],
+            y=y_indirect_connections[itr],
+            z=z_indirect_connections[itr],
+            mode='lines',
+            line=dict(color=colors_for_indirect_connections[itr], width=3),
+            hoverinfo='none')
+
+        data.append(trace_indirect_connections)
 
     fig = go.Figure(data=data)
     fig.show()
 
 
 switches, connections = read_graph_data('./../input/topology.txt')
+# switches, connections = read_graph_data('./../input/topology2.txt')
 display_network(switches, connections)
