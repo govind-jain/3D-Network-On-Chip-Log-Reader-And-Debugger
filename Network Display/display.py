@@ -68,15 +68,9 @@ def display_network(switches, connections):
         y_indirect_connections.append([])
         z_indirect_connections.append([])
 
-    # create lists holding midpoints that we will use to anchor text
-    # x_midpoint_connections = []
-    # y_midpoint_connections = []
-    # z_midpoint_connections = []
-
     # create lists to store the labels of switches and repeaters
     switch_labels = []
     repeater_labels = []
-    # midpoint_labels = []
 
     for switch_data in switches:
         x_switches.append(switch_data[0])
@@ -147,12 +141,6 @@ def display_network(switches, connections):
             z_coords_start_end_of_direct_connection = [z_src_switch, z_dest_switch, None]
             z_direct_connections += z_coords_start_end_of_direct_connection
 
-        # x_midpoint_connections.append(0.5 * (x_src_switch + x_dest_switch))
-        # y_midpoint_connections.append(0.5 * (y_src_switch + y_dest_switch))
-        # z_midpoint_connections.append(0.5 * (z_src_switch + z_dest_switch))
-        #
-        # midpoint_labels.append(f'Number of Repeaters={connection_data[2]}')
-
     # Include the traces we want to plot and create a figure
     data = []
 
@@ -164,7 +152,7 @@ def display_network(switches, connections):
         mode='markers',
         text=switch_labels,
         marker=dict(symbol='circle',
-                    size=20,
+                    size=16,
                     color='red')
     )
 
@@ -178,7 +166,7 @@ def display_network(switches, connections):
         mode='markers',
         text=repeater_labels,
         marker=dict(symbol='circle',
-                    size=12,
+                    size=10,
                     color='black')
     )
 
