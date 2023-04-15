@@ -1,47 +1,7 @@
-import plotly.graph_objects as go
+import plotly.graph_objs as go
 
 
-def is_sorted_low_to_high(switch_data_1, switch_data_2):
-    if switch_data_1[0] != switch_data_2[0]:
-        return switch_data_1[0] < switch_data_2[0]
-    elif switch_data_1[1] != switch_data_2[1]:
-        return switch_data_1[1] < switch_data_2[1]
-    elif switch_data_1[2] != switch_data_2[2]:
-        return switch_data_1[2] < switch_data_2[2]
-
-    return False
-
-
-def read_graph_data(filename):
-    switches = []
-    connections = []
-
-    f = open(filename, 'r')
-
-    first_line = [eval(i) for i in f.readline().split()]
-    number_of_switches = first_line[0]
-    number_of_connections = first_line[1]
-
-    for x in range(number_of_switches):
-        switch_data = [eval(i) for i in f.readline().split()]
-        switches.append(switch_data)
-
-    switches = sorted(switches, key=lambda x: x[3])
-
-    for x in range(number_of_connections):
-        connection_data = [eval(i) for i in f.readline().split()]
-
-        if not is_sorted_low_to_high(switches[connection_data[0]], switches[connection_data[1]]):
-            connection_data[0], connection_data[1] = connection_data[1], connection_data[0]
-
-        connections.append(connection_data)
-
-    f.close()
-
-    return switches, connections
-
-
-def display_network(switches, connections):
+def network_topology_display(switches, connections):
     # we need to separate the X,Y,Z coordinates for Plotly
     x_switches = []  # x-coordinates of switches
     y_switches = []  # y-coordinates of switches
@@ -172,14 +132,6 @@ def display_network(switches, connections):
 
     data.append(trace_repeaters)
 
-    # trace_weights = go.Scatter3d(x=x_midpoint_edges, y=y_midpoint_edges, z=z_midpoint_edges,
-    #                              mode='markers',
-    #                              marker=dict(color='rgb(255,0,0)', size=1),
-    #                              # set the same color as for the edge lines
-    #                              text=midpoint_labels, hoverinfo='text')
-
-    # data.append(trace_weights)
-
     # create a trace for the direct_connections
     trace_direct_connections = go.Scatter3d(
         x=x_direct_connections,
@@ -204,10 +156,15 @@ def display_network(switches, connections):
 
         data.append(trace_indirect_connections)
 
-    fig = go.Figure(data=data)
-    fig.show()
+    # Define layout for the 3D plot
+    layout = go.Layout(
+        scene=dict(
+            xaxis=dict(title='X-axis'),
+            yaxis=dict(title='Y-axis'),
+            zaxis=dict(title='Z-axis')
+        ),
+        margin=dict(l=0, r=0, b=0, t=0)
+    )
 
-
-switches, connections = read_graph_data('./../input/topology.txt')
-# switches, connections = read_graph_data('./../input/topology2.txt')
-display_network(switches, connections)
+    fig = go.Figure(data=data, layout=layout)
+    return fig
