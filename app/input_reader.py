@@ -9,7 +9,7 @@ def is_sorted_low_to_high(switch_data_1, switch_data_2):
     return False
 
 
-def read_graph_data(filename):
+def read_topology_config(filename):
     switches = []
     connections = []
 

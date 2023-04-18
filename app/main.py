@@ -6,7 +6,7 @@ from input_reader import *
 
 # Need to identify using logger
 max_clock_cycle = 100
-switches, connections = read_graph_data('./../input/topology.txt')
+switches, connections = read_topology_config('./../input/topology.txt')
 fig = network_topology_display(switches, connections)
 switch_array = ['Switch 0', 'Switch 1', 'Switch 2', 'Switch 3']
 layer_array = ['Layer 0', 'Layer 1', 'Layer 2', 'Layer 3']
