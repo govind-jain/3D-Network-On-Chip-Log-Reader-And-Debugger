@@ -16,3 +16,11 @@ def register_packet_path_callbacks(app):
 
     # Delete this line, written to avoid error for now
     return app
+
+
+def get_packet_section_layout():
+    packet_layout = [dcc.Input(id='packet-id-input_files', type='number', placeholder='Enter Packet ID'),
+                     html.Button('Show Packet Path', id='show-packet-path'),
+                     dcc.Graph(id='packet-path-graph')]
+
+    return packet_layout
