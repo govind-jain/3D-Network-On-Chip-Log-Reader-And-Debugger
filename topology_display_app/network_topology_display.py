@@ -104,7 +104,7 @@ def network_topology_display(switches, connections):
     # Include the traces we want to plot and create a figure
     data = []
 
-    # create a trace for the switches
+    # Create a trace for the switches
     trace_switches = go.Scatter3d(
         x=x_switches,
         y=y_switches,
