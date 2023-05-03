@@ -23,7 +23,7 @@ def read_topology_config(filename):
         switch_data = [eval(i) for i in f.readline().split()]
         switches.append(switch_data)
 
-    switches = sorted(switches, key=lambda x: x[3])
+    switches = sorted(switches, key=lambda var: var[3])
 
     for x in range(number_of_connections):
         connection_data = [eval(i) for i in f.readline().split()]

@@ -1,6 +1,21 @@
 import plotly.graph_objs as go
 
 
+def fill_coordinates(x_switches, y_switches, z_switches, x_repeaters, y_repeaters, z_repeaters):
+
+    node_coordinates = []
+    number_of_switches = len(x_switches)
+    number_of_repeaters = len(x_repeaters)
+
+    for itr in range(0, number_of_switches):
+        node_coordinates.append([x_switches[itr], y_switches[itr], z_switches[itr]])
+
+    for itr in range(0, number_of_repeaters):
+        node_coordinates.append([x_repeaters[itr], y_repeaters[itr], z_repeaters[itr]])
+
+    return node_coordinates
+
+
 def network_topology_display(switches, connections):
     # we need to separate the X,Y,Z coordinates for Plotly
     x_switches = []  # x-coordinates of switches
@@ -37,6 +52,8 @@ def network_topology_display(switches, connections):
         y_switches.append(switch_data[1])
         z_switches.append(switch_data[2])
         switch_labels.append(f'Switch ID = {switch_data[3]}')
+
+    repeater_counter = len(switches)
 
     for connection_data in connections:
 
@@ -75,7 +92,8 @@ def network_topology_display(switches, connections):
                     y_repeaters.append(y_curr_node)
                     z_repeaters.append(z_curr_node)
 
-                    repeater_labels.append(f'Repeater ID = {src_switch_id}_{dest_switch_id}_{itr}')
+                    repeater_labels.append(f'Repeater ID = {repeater_counter}')
+                    repeater_counter = repeater_counter + 1
 
                 # Create connection b/w curr_node and prev_node
                 x_coords_start_end_of_indirect_connection = [x_prev_node, x_curr_node, None]
@@ -167,4 +185,8 @@ def network_topology_display(switches, connections):
     )
 
     fig = go.Figure(data=data, layout=layout)
-    return fig
+
+    # We also want the coordinates of switches and repeater in one array
+    node_coordinates = fill_coordinates(x_switches, y_switches, z_switches, x_repeaters, y_repeaters, z_repeaters)
+
+    return fig, node_coordinates
