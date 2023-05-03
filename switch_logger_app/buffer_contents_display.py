@@ -27,9 +27,9 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
     node_color = 'red'
     input_buf_packet_color = 'blue'
     output_buf_packet_color = 'green'
-    packet_initial_position = 0.1
-    packet_spacing_axis = 0.15
-    packet_spacing_separate = 0.015
+    packet_initial_position = 0.015
+    packet_spacing_axis = 0.015
+    packet_spacing_separate = 0.005
 
     # data stores the objects that needs to be displayed
     data = []
@@ -94,14 +94,15 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
     if len(input_buf_x) != 0:
         input_buf_x_labels = []
-        counter = 1
+        counter = 0
+        packet_final_position = packet_initial_position + (len(input_buf_x)-1)*packet_spacing_axis
 
         for packet_id in input_buf_x:
             input_buf_x_labels.append(f'Packet ID = {packet_id} | DIR = E | Type = IP | Pos = {counter}')
             counter = counter + 1
 
         trace_input_buf_x = go.Scatter3d(
-            x=np.linspace(packet_initial_position, packet_spacing_axis, num=len(input_buf_x)),
+            x=np.linspace(packet_initial_position, packet_final_position, num=len(input_buf_x)),
             y=[packet_spacing_separate] * len(input_buf_x),
             z=[0] * len(input_buf_x),
             mode='markers',
@@ -115,14 +116,15 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
     if len(input_buf_x_neg) != 0:
         input_buf_x_neg_labels = []
-        counter = 1
+        counter = 0
+        packet_final_position = packet_initial_position + (len(input_buf_x_neg) - 1) * packet_spacing_axis
 
         for packet_id in input_buf_x_neg:
             input_buf_x_neg_labels.append(f'Packet ID = {packet_id} | DIR = W | Type = IP | Pos = {counter}')
             counter = counter + 1
 
         trace_input_buf_x_neg = go.Scatter3d(
-            x=np.linspace(-1 * packet_initial_position, -1 * packet_spacing_axis, num=len(input_buf_x_neg)),
+            x=np.linspace(-1 * packet_initial_position, -1 * packet_final_position, num=len(input_buf_x_neg)),
             y=[packet_spacing_separate] * len(input_buf_x_neg),
             z=[0] * len(input_buf_x_neg),
             mode='markers',
@@ -136,7 +138,8 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
     if len(input_buf_y) != 0:
         input_buf_y_labels = []
-        counter = 1
+        counter = 0
+        packet_final_position = packet_initial_position + (len(input_buf_y) - 1) * packet_spacing_axis
 
         for packet_id in input_buf_y:
             input_buf_y_labels.append(f'Packet ID = {packet_id} | DIR = N | Type = IP | Pos = {counter}')
@@ -144,7 +147,7 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
         trace_input_buf_y = go.Scatter3d(
             x=[packet_spacing_separate] * len(input_buf_y),
-            y=np.linspace(packet_initial_position, packet_spacing_axis, num=len(input_buf_y)),
+            y=np.linspace(packet_initial_position, packet_final_position, num=len(input_buf_y)),
             z=[0] * len(input_buf_y),
             mode='markers',
             text=input_buf_y_labels,
@@ -157,7 +160,8 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
     if len(input_buf_y_neg) != 0:
         input_buf_y_neg_labels = []
-        counter = 1
+        counter = 0
+        packet_final_position = packet_initial_position + (len(input_buf_y_neg) - 1) * packet_spacing_axis
 
         for packet_id in input_buf_y_neg:
             input_buf_y_neg_labels.append(f'Packet ID = {packet_id} | DIR = S | Type = IP | Pos = {counter}')
@@ -165,7 +169,7 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
         trace_input_buf_y_neg = go.Scatter3d(
             x=[packet_spacing_separate] * len(input_buf_y_neg),
-            y=np.linspace(-1 * packet_initial_position, -1 * packet_spacing_axis, num=len(input_buf_y_neg)),
+            y=np.linspace(-1 * packet_initial_position, -1 * packet_final_position, num=len(input_buf_y_neg)),
             z=[0] * len(input_buf_y_neg),
             mode='markers',
             text=input_buf_y_neg_labels,
@@ -178,7 +182,8 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
     if len(input_buf_z) != 0:
         input_buf_z_labels = []
-        counter = 1
+        counter = 0
+        packet_final_position = packet_initial_position + (len(input_buf_z) - 1) * packet_spacing_axis
 
         for packet_id in input_buf_z:
             input_buf_z_labels.append(f'Packet ID = {packet_id} | DIR = T | Type = IP | Pos = {counter}')
@@ -187,7 +192,7 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
         trace_input_buf_z = go.Scatter3d(
             x=[packet_spacing_separate] * len(input_buf_z),
             y=[0] * len(input_buf_z),
-            z=np.linspace(packet_initial_position, packet_spacing_axis, num=len(input_buf_z)),
+            z=np.linspace(packet_initial_position, packet_final_position, num=len(input_buf_z)),
             mode='markers',
             text=input_buf_z_labels,
             hovertemplate='%{text}<extra></extra>',
@@ -199,7 +204,8 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
     if len(input_buf_z_neg) != 0:
         input_buf_z_neg_labels = []
-        counter = 1
+        counter = 0
+        packet_final_position = packet_initial_position + (len(input_buf_z_neg) - 1) * packet_spacing_axis
 
         for packet_id in input_buf_z_neg:
             input_buf_z_neg_labels.append(f'Packet ID = {packet_id} | DIR = D | Type = IP | Pos = {counter}')
@@ -208,7 +214,7 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
         trace_input_buf_z_neg = go.Scatter3d(
             x=[packet_spacing_separate] * len(input_buf_z_neg),
             y=[0] * len(input_buf_z_neg),
-            z=np.linspace(-1 * packet_initial_position, -1 * packet_spacing_axis, num=len(input_buf_z_neg)),
+            z=np.linspace(-1 * packet_initial_position, -1 * packet_final_position, num=len(input_buf_z_neg)),
             mode='markers',
             text=input_buf_z_neg_labels,
             hovertemplate='%{text}<extra></extra>',
@@ -245,16 +251,17 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
     if len(output_buf_x) != 0:
         output_buf_x_labels = []
-        counter = len(output_buf_x)
+        counter = 0
+        packet_final_position = packet_initial_position + (len(output_buf_x) - 1) * packet_spacing_axis
 
         for packet_id in output_buf_x:
             output_buf_x_labels.append(f'Packet ID = {packet_id} | DIR = E | Type = OP | Pos = {counter}')
-            counter = counter - 1
+            counter = counter + 1
 
         output_buf_x_labels.reverse()
 
         trace_output_buf_x = go.Scatter3d(
-            x=np.linspace(packet_initial_position, packet_spacing_axis, num=len(output_buf_x)),
+            x=np.linspace(packet_initial_position, packet_final_position, num=len(output_buf_x)),
             y=[-1 * packet_spacing_separate] * len(output_buf_x),
             z=[0] * len(output_buf_x),
             mode='markers',
@@ -268,16 +275,17 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
     if len(output_buf_x_neg) != 0:
         output_buf_x_neg_labels = []
-        counter = len(output_buf_x_neg)
+        counter = 0
+        packet_final_position = packet_initial_position + (len(output_buf_x_neg) - 1) * packet_spacing_axis
 
         for packet_id in output_buf_x_neg:
             output_buf_x_neg_labels.append(f'Packet ID = {packet_id} | DIR = W | Type = OP | Pos = {counter}')
-            counter = counter - 1
+            counter = counter + 1
 
         output_buf_x_neg_labels.reverse()
 
         trace_output_buf_x_neg = go.Scatter3d(
-            x=np.linspace(-1 * packet_initial_position, -1 * packet_spacing_axis, num=len(output_buf_x_neg)),
+            x=np.linspace(-1 * packet_initial_position, -1 * packet_final_position, num=len(output_buf_x_neg)),
             y=[-1 * packet_spacing_separate] * len(output_buf_x_neg),
             z=[0] * len(output_buf_x_neg),
             mode='markers',
@@ -291,17 +299,18 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
     if len(output_buf_y) != 0:
         output_buf_y_labels = []
-        counter = len(output_buf_y)
+        counter = 0
+        packet_final_position = packet_initial_position + (len(output_buf_y) - 1) * packet_spacing_axis
 
         for packet_id in output_buf_y:
             output_buf_y_labels.append(f'Packet ID = {packet_id} | DIR = N | Type = OP | Pos = {counter}')
-            counter = counter - 1
+            counter = counter + 1
 
         output_buf_y_labels.reverse()
 
         trace_output_buf_y = go.Scatter3d(
             x=[-1 * packet_spacing_separate] * len(output_buf_y),
-            y=np.linspace(packet_initial_position, packet_spacing_axis, num=len(output_buf_y)),
+            y=np.linspace(packet_initial_position, packet_final_position, num=len(output_buf_y)),
             z=[0] * len(output_buf_y),
             mode='markers',
             text=output_buf_y_labels,
@@ -314,17 +323,18 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
     if len(output_buf_y_neg) != 0:
         output_buf_y_neg_labels = []
-        counter = len(output_buf_y_neg)
+        counter = 0
+        packet_final_position = packet_initial_position + (len(output_buf_y_neg) - 1) * packet_spacing_axis
 
         for packet_id in output_buf_y_neg:
             output_buf_y_neg_labels.append(f'Packet ID = {packet_id} | DIR = S | Type = OP | Pos = {counter}')
-            counter = counter - 1
+            counter = counter + 1
 
         output_buf_y_neg_labels.reverse()
 
         trace_output_buf_y_neg = go.Scatter3d(
             x=[-1 * packet_spacing_separate] * len(output_buf_y_neg),
-            y=np.linspace(-1 * packet_initial_position, -1 * packet_spacing_axis, num=len(output_buf_y_neg)),
+            y=np.linspace(-1 * packet_initial_position, -1 * packet_final_position, num=len(output_buf_y_neg)),
             z=[0] * len(output_buf_y_neg),
             mode='markers',
             text=output_buf_y_neg_labels,
@@ -337,18 +347,19 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
     if len(output_buf_z) != 0:
         output_buf_z_labels = []
-        counter = len(output_buf_z)
+        counter = 0
+        packet_final_position = packet_initial_position + (len(output_buf_z) - 1) * packet_spacing_axis
 
         for packet_id in output_buf_z:
             output_buf_z_labels.append(f'Packet ID = {packet_id} | DIR = T | Type = OP | Pos = {counter}')
-            counter = counter - 1
+            counter = counter + 1
 
         output_buf_z_labels.reverse()
 
         trace_output_buf_z = go.Scatter3d(
             x=[-1 * packet_spacing_separate] * len(output_buf_z),
             y=[0] * len(output_buf_z),
-            z=np.linspace(packet_initial_position, packet_spacing_axis, num=len(output_buf_z)),
+            z=np.linspace(packet_initial_position, packet_final_position, num=len(output_buf_z)),
             mode='markers',
             text=output_buf_z_labels,
             hovertemplate='%{text}<extra></extra>',
@@ -360,18 +371,19 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
 
     if len(output_buf_z_neg) != 0:
         output_buf_z_neg_labels = []
-        counter = len(output_buf_z_neg)
+        counter = 0
+        packet_final_position = packet_initial_position + (len(output_buf_z_neg) - 1) * packet_spacing_axis
 
         for packet_id in output_buf_z_neg:
             output_buf_z_neg_labels.append(f'Packet ID = {packet_id} | DIR = B | Type = OP | Pos = {counter}')
-            counter = counter - 1
+            counter = counter + 1
 
         output_buf_z_neg_labels.reverse()
 
         trace_output_buf_z_neg = go.Scatter3d(
             x=[-1 * packet_spacing_separate] * len(output_buf_z_neg),
             y=[0] * len(output_buf_z_neg),
-            z=np.linspace(-1 * packet_initial_position, -1 * packet_spacing_axis, num=len(output_buf_z_neg)),
+            z=np.linspace(-1 * packet_initial_position, -1 * packet_final_position, num=len(output_buf_z_neg)),
             mode='markers',
             text=output_buf_z_neg_labels,
             hovertemplate='%{text}<extra></extra>',
@@ -393,12 +405,12 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
     fig = go.Figure(data=data, layout=layout)
 
     # Add 3D axes at the origin
-    pos_x_limit = len(input_buf_x) * packet_spacing_axis * (2 / 3)
-    neg_x_limit = -1 * len(input_buf_x_neg) * packet_spacing_axis * (2 / 3)
-    pos_y_limit = len(input_buf_y) * packet_spacing_axis * (2 / 3)
-    neg_y_limit = -1 * len(input_buf_y_neg) * packet_spacing_axis * (2 / 3)
-    pos_z_limit = len(input_buf_z) * packet_spacing_axis * (2 / 3)
-    neg_z_limit = -1 * len(input_buf_z_neg) * packet_spacing_axis * (2 / 3)
+    pos_x_limit = max(len(input_buf_x), len(output_buf_x)) * packet_spacing_axis
+    neg_x_limit = -1 * max(len(input_buf_x_neg), len(output_buf_x_neg)) * packet_spacing_axis
+    pos_y_limit = max(len(input_buf_y), len(output_buf_y)) * packet_spacing_axis
+    neg_y_limit = -1 * max(len(input_buf_y_neg), len(output_buf_y_neg)) * packet_spacing_axis
+    pos_z_limit = max(len(input_buf_z), len(output_buf_z)) * packet_spacing_axis
+    neg_z_limit = -1 * max(len(input_buf_z_neg), len(output_buf_z_neg)) * packet_spacing_axis
 
     fig.add_trace(
         go.Scatter3d(x=[0, pos_x_limit], y=[0, 0], z=[0, 0], mode='lines', name='X', line=dict(color='black')))
