@@ -2,6 +2,7 @@ import dash
 from topology_display_app.topology_reader import *
 from topology_display_app.network_topology_display import *
 from topology_display_app.layout_and_callbacks import *
+from topology_display_app.topology_processing import *
 from switch_logger_app.switch_log_reader import *
 from switch_logger_app.buffer_contents_display import *
 from switch_logger_app.layout_and_callbacks import *
@@ -11,7 +12,8 @@ from packet_logger_app.layout_and_callbacks import *
 
 # Read topology configuration file and generate required data
 switches, connections = read_topology_config('input_files/topology.txt')
-topology_display_fig, node_coordinates = network_topology_display(switches, connections)
+node_coordinates, node_limits = topology_processing(switches, connections)
+topology_display_fig = network_topology_display(switches, connections)
 
 # Read switch logger file and generate required data
 node_log, max_clock_cycle, layer_array, switch_array = read_switch_config('input_files/switch_logger.txt')

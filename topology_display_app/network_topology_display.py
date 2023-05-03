@@ -11,10 +11,6 @@ def network_topology_display(switches, connections):
     y_repeaters = []  # y-coordinates of repeaters
     z_repeaters = []  # z-coordinates of repeaters
 
-    # Store the coordinates tuple for switches and repeaters
-    # Required for other module, but done here to avoid recalculation
-    node_coordinates = []
-
     # we need to create lists that contain the starting and ending coordinates of each connection
     x_direct_connections = []  # x-coordinates of src and dest switches for direct connections
     y_direct_connections = []  # y-coordinates of src and dest switches for direct connections
@@ -41,7 +37,6 @@ def network_topology_display(switches, connections):
         y_switches.append(switch_data[1])
         z_switches.append(switch_data[2])
         switch_labels.append(f'Switch ID = {switch_data[3]}')
-        node_coordinates.append([switch_data[0], switch_data[1], switch_data[2]])
 
     # Used to assign id to repeaters
     repeater_counter = len(switches)
@@ -84,7 +79,6 @@ def network_topology_display(switches, connections):
                     z_repeaters.append(z_curr_node)
 
                     repeater_labels.append(f'Repeater ID = {repeater_counter}')
-                    node_coordinates.append([x_curr_node, y_curr_node, z_curr_node])
                     repeater_counter = repeater_counter + 1
 
                 # Create connection b/w curr_node and prev_node
@@ -178,4 +172,4 @@ def network_topology_display(switches, connections):
 
     fig = go.Figure(data=data, layout=layout)
 
-    return fig, node_coordinates
+    return fig
