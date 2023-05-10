@@ -5,7 +5,7 @@ def read_switch_config(filepath):
   node_log = []
   max_clock = 0
   layer_arr = []
-  switch_arr = []
+  node_arr = []
   
   with open(filepath) as fp:
     line = fp.readline().strip()
@@ -40,19 +40,25 @@ def read_switch_config(filepath):
           layer_arr.append(layer_id)       
 
         # Populate switch_arr
-        if(node_id not in switch_arr):
-          switch_arr.append(node_id)
+        if(node_id not in node_arr):
+          # Check iff switch or repeater
+          node_arr.append(node_id)
+          # if int(node_id) < switches_len: 
+          #   node_arr.append("Switch: " + node_id)
+          # else:
+          #   node_arr.append("Repeater: " + node_id)
 
+        
         line = fp.readline().strip() 
         cnt +=1
 
   layer_arr.sort()
-  switch_arr.sort()
+  node_arr.sort()
 
   # print(layer_arr)
   # print(switch_arr)
   # print(max_clock)
   # print(node_log)
-  return node_log, max_clock, layer_arr, switch_arr
+  return node_log, max_clock, layer_arr, node_arr
   
 # read_switch_config('../input_files/switch_logger.txt')
