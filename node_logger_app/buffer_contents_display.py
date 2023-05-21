@@ -2,7 +2,7 @@ import plotly.graph_objs as go
 import numpy as np
 
 
-def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
+def buffer_contents_display(node_log, clock_cycle, layer_id, node_id):
     # Contains strings of format position_idx, dir_id, packet_id
     input_buf = []
     output_buf = []
@@ -11,7 +11,7 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
     # Storing based on type of buffer
     for log in node_log:
         if int(log['clock_cycle']) == int(clock_cycle) and int(log['layer_id']) == int(layer_id) \
-                and int(switch_id) == int(log['node_id']):
+                and int(node_id) == int(log['node_id']):
 
             if int(log['buffer_type']) == 0:
                 input_buf.append("{} {} {}".format(log['position_idx'], log['dir_id'], log['packet_id']))
@@ -34,27 +34,27 @@ def buffer_contents_display(node_log, clock_cycle, layer_id, switch_id):
     # data stores the objects that needs to be displayed
     data = []
 
-    # We set the coordinates to 0,0,0 of the switch that we are looking for
-    x_switch = [0]
-    y_switch = [0]
-    z_switch = [0]
+    # We set the coordinates to 0,0,0 of the node that we are looking for
+    x_node = [0]
+    y_node = [0]
+    z_node = [0]
 
-    switch_label = []
-    switch_label.append(f'Switch ID = {switch_id}')
+    node_label = []
+    node_label.append(f'Node ID = {node_id}')
 
-    trace_switch = go.Scatter3d(
-        x=x_switch,
-        y=y_switch,
-        z=z_switch,
+    trace_node = go.Scatter3d(
+        x=x_node,
+        y=y_node,
+        z=z_node,
         mode='markers',
-        text=switch_label,
+        text=node_label,
         hovertemplate='%{text}<extra></extra>',
         marker=dict(symbol='circle',
                     size=node_radius,
                     color=node_color)
     )
 
-    data.append(trace_switch)
+    data.append(trace_node)
 
     ############################################################
     ###################### INPUT BUFFERS #######################

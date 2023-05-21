@@ -1,9 +1,9 @@
-def read_switch_log(filepath):
+def read_node_log(filepath):
     # [packet_id][clock_cycle][layer_id][node_id][dir_id][buffer_type][position_idx]
     node_log = []
     max_clock = 0
     layer_arr = []
-    switch_arr = []
+    node_arr = []
 
     with open(filepath) as fp:
         line = fp.readline().strip()
@@ -37,14 +37,14 @@ def read_switch_log(filepath):
             if layer_id not in layer_arr:
                 layer_arr.append(layer_id)
 
-                # Populate switch_arr
-            if node_id not in switch_arr:
-                switch_arr.append(node_id)
+            # Populate node_arr
+            if node_id not in node_arr:
+                node_arr.append(node_id)
 
             line = fp.readline().strip()
             cnt += 1
 
     layer_arr.sort()
-    switch_arr.sort()
+    node_arr.sort()
 
-    return node_log, max_clock, layer_arr, switch_arr
+    return node_log, max_clock, layer_arr, node_arr

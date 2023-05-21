@@ -1,14 +1,14 @@
 from dash import dcc, html
 from dash.dependencies import Input, Output, State
-from switch_logger_app.buffer_contents_display import buffer_contents_display
+from node_logger_app.buffer_contents_display import buffer_contents_display
 
 
 # Write all the callbacks for this app inside the function
 def register_buffer_contents_callbacks(app, node_log):
     @app.callback(
         [Output('display-buffer-content', 'figure'),
-         Output('selected-content-switch-logger', 'children'),
-         Output('log-text-switch-logger', 'value'),
+         Output('selected-content-node-logger', 'children'),
+         Output('log-text-node-logger', 'value'),
          ],
         [Input('go-button', 'n_clicks')
          ],
@@ -41,7 +41,7 @@ def register_buffer_contents_callbacks(app, node_log):
         options_selected = True
 
         if layer_id is None or node_id is None:
-            relevant_logs = "Layer Id or Switch Id is not selected."
+            relevant_logs = "Layer Id or Node Id is not selected."
             options_selected = False
 
         selected = f'Relevant log files for the selected CLOCK_CYCLE: {clock_cycle}, LAYER_ID: {layer_id}, NODE_ID: {node_id}'
@@ -55,17 +55,17 @@ def register_buffer_contents_callbacks(app, node_log):
                 return None, selected, relevant_logs
 
 
-def get_switch_section_layout(layer_array, switch_array, max_clock_cycle, number_of_switches):
+def get_node_section_layout(layer_array, node_array, max_clock_cycle, number_of_switches):
     modified_node_list = []
 
-    for node in switch_array:
+    for node in node_array:
         if int(node) < number_of_switches:
             modified_node_list.append("Switch {}".format(node))
         else:
             modified_node_list.append("Repeater {}".format(node))
 
-    switch_section_layout = [
-        html.H2('Switch logger', style={'text-align': 'center', 'padding': '20px', 'font-size': '30px'}),
+    node_section_layout = [
+        html.H2('Node logger', style={'text-align': 'center', 'padding': '20px', 'font-size': '30px'}),
         html.Div(id='output-data'),
         html.Div([
             html.Div([
@@ -100,13 +100,13 @@ def get_switch_section_layout(layer_array, switch_array, max_clock_cycle, number
                 dcc.Graph(id='display-buffer-content'),
             ]),
             html.Div([
-                html.Div(id='selected-content-switch-logger', style={'padding-top': '20px'}),
+                html.Div(id='selected-content-node-logger', style={'padding-top': '20px'}),
             ]),
             html.Div([
-                dcc.Textarea(id="log-text-switch-logger", value="Please select the above options...",
+                dcc.Textarea(id="log-text-node-logger", value="Please select the above options...",
                              style={'width': '75%', 'height': 200}, )
             ]),
         ], style={'margin': '40px'}),
     ]
 
-    return switch_section_layout
+    return node_section_layout
