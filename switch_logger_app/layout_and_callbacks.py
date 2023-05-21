@@ -7,14 +7,14 @@ from switch_logger_app.buffer_contents_display import buffer_contents_display
 def register_buffer_contents_callbacks(app, node_log):
     @app.callback(
         [Output('display-buffer-content', 'figure'),
-         Output('selected-content', 'children'),
-         Output('log-text', 'value'),
+         Output('selected-content-switch-logger', 'children'),
+         Output('log-text-switch-logger', 'value'),
          ],
         [Input('go-button', 'n_clicks')
          ],
         [State('clock-cycle-selector', 'value'),
          State('layer-selector', 'value'),
-         State('switch-selector', 'value')
+         State('node-selector', 'value')
          ],
         prevent_initial_call=True
     )
@@ -28,6 +28,7 @@ def register_buffer_contents_callbacks(app, node_log):
             same_layer = (int(layer_id) == int(log['layer_id']))
             same_clock_cycle = (clock_cycle == int(log['clock_cycle']))
             same_node_id = (node_id == int(log['node_id']))
+            # print(same_layer, same_clock_cycle, same_node_id)
 
             if same_layer and same_clock_cycle and same_node_id:
                 relevant_logs += "CLOCK_CYCLE={} LAYER_ID={} NODE_ID={} DIR_ID={} BUFFER_TYPE={} POS={} PACKET_ID={}\n".format(
@@ -78,7 +79,7 @@ def get_switch_section_layout(layer_array, switch_array, max_clock_cycle, number
             html.Div([
                 html.Label('Select Node: '),
                 dcc.Dropdown(
-                    id='switch-selector',
+                    id='node-selector',
                     options=modified_node_list,
                     placeholder="Node ID"
                 ),
@@ -99,10 +100,10 @@ def get_switch_section_layout(layer_array, switch_array, max_clock_cycle, number
                 dcc.Graph(id='display-buffer-content'),
             ]),
             html.Div([
-                html.Div(id='selected-content'),
+                html.Div(id='selected-content-switch-logger', style={'padding-top': '20px'}),
             ]),
             html.Div([
-                dcc.Textarea(id="log-text", value="Please select the above options...",
+                dcc.Textarea(id="log-text-switch-logger", value="Please select the above options...",
                              style={'width': '75%', 'height': 200}, )
             ]),
         ], style={'margin': '40px'}),
