@@ -14,12 +14,12 @@ node_coordinates, node_limits = topology_processing(switches, connections)
 topology_display_fig = network_topology_display(switches, connections)
 
 # Read node logger file and generate required data
-node_log, max_clock_cycle, layer_array, node_array = read_node_log('input_files/node_logger.txt')
-packet_details = read_packet_log('input_files/packet_logger.txt')
+node_logs, max_clock_cycle, layer_array, node_array = read_node_log('input_files/node_logger.txt')
+packet_logs = read_packet_log('input_files/packet_logger.txt')
 
 app = dash.Dash(__name__)
-register_buffer_contents_callbacks(app, node_log)
-register_packet_path_callbacks(app, switches, connections, node_coordinates, node_limits, packet_details)
+register_buffer_contents_callbacks(app, node_logs)
+register_packet_path_callbacks(app, topology_display_fig, len(switches), node_coordinates, node_limits, packet_logs)
 
 
 def get_app_layout():
