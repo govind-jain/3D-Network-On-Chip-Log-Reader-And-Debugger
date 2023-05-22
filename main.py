@@ -6,6 +6,7 @@ from topology_display_app.topology_processing import *
 from node_logger_app.node_log_reader import *
 from node_logger_app.layout_and_callbacks import *
 from packet_logger_app.layout_and_callbacks import *
+from packet_logger_app.packet_log_reader import *
 
 # Read topology configuration file and generate required data
 switches, connections = read_topology_config('input_files/topology.txt')
@@ -14,10 +15,11 @@ topology_display_fig = network_topology_display(switches, connections)
 
 # Read node logger file and generate required data
 node_log, max_clock_cycle, layer_array, node_array = read_node_log('input_files/node_logger.txt')
+packet_details = read_packet_log('input_files/packet_logger.txt')
 
 app = dash.Dash(__name__)
 register_buffer_contents_callbacks(app, node_log)
-register_packet_path_callbacks(app, switches, connections, node_coordinates, node_limits)
+register_packet_path_callbacks(app, switches, connections, node_coordinates, node_limits, packet_details)
 
 
 def get_app_layout():

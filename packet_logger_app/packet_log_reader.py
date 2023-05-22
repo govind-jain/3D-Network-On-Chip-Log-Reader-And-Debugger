@@ -1,6 +1,5 @@
 def read_packet_log(filepath):
     packet_dic = {}
-    start_of_clock = []
     i = 0
 
     f = open(filepath, 'r')
@@ -24,7 +23,6 @@ def read_packet_log(filepath):
         combine = []
 
         if i == 0 or not packet_number in packet_dic:
-            start_of_clock.append(clock_cycle)
             packet_dic[packet_number] = combine
             combine.append(tup)
         else:
