@@ -1,6 +1,5 @@
 def read_packet_log(filepath):
     packet_dic = {}
-    i = 0
 
     f = open(filepath, 'r')
 
@@ -20,14 +19,9 @@ def read_packet_log(filepath):
 
         tup = (layer_id, node_id, dir_id, buffer_id, pos_idx, clock_cycle)
 
-        combine = []
+        if not (packet_number in packet_dic):
+            packet_dic[packet_number] = []
 
-        if i == 0 or not packet_number in packet_dic:
-            packet_dic[packet_number] = combine
-            combine.append(tup)
-        else:
-            packet_dic[packet_number].append(tup)
-
-        i = i + 1
+        packet_dic[packet_number].append(tup)
 
     return packet_dic
