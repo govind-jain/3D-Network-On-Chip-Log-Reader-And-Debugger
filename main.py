@@ -2,41 +2,38 @@ import dash
 from topology_display_app.topology_reader import *
 from topology_display_app.network_topology_display import *
 from topology_display_app.layout_and_callbacks import *
-from switch_logger_app.switch_log_reader import *
-from switch_logger_app.buffer_contents_display import *
-from switch_logger_app.layout_and_callbacks import *
-from packet_logger_app.packet_log_reader import *
-from packet_logger_app.packet_path_display import *
+from topology_display_app.topology_processing import *
+from node_logger_app.node_log_reader import *
+from node_logger_app.layout_and_callbacks import *
 from packet_logger_app.layout_and_callbacks import *
+from packet_logger_app.packet_log_reader import *
 
-# number_of_topology_layers = 5
-
-# Need to identify using logger
+# Read topology configuration file and generate required data
 switches, connections = read_topology_config('input_files/topology.txt')
+node_coordinates, node_limits = topology_processing(switches, connections)
 topology_display_fig = network_topology_display(switches, connections)
-# switch_array = [f"{'Switch'} {i}" for i in range(len(switches))]
-# layer_array = [f"{'Layer'} {i}" for i in range(number_of_topology_layers)]
-# max_clock_cycle = 100
 
-node_log, max_clock_cycle, layer_array, switch_array = read_switch_config('input_files/switch_logger.txt')
+# Read node logger file and generate required data
+node_logs, max_clock_cycle, layer_array, node_array = read_node_log('input_files/node_logger.txt')
+packet_logs = read_packet_log('input_files/packet_logger.txt')
 
 app = dash.Dash(__name__)
-register_buffer_contents_callbacks(app, node_log)
+register_buffer_contents_callbacks(app, node_logs)
+register_packet_path_callbacks(app, topology_display_fig, len(switches), node_coordinates, node_limits, packet_logs)
 
-register_packet_path_callbacks(app)
 
 def get_app_layout():
-    topology_layout = get_topology_display_layout(topology_display_fig)
-    switch_layout = get_switch_section_layout(layer_array, switch_array, max_clock_cycle)
-    packet_layout = get_packet_section_layout()
+    topology_section_layout = get_topology_display_layout(topology_display_fig)
+    node_section_layout = get_node_section_layout(layer_array, node_array, max_clock_cycle, len(switches))
+    packet_section_layout = get_packet_section_layout()
 
     layout_array = []
 
-    layout_array.extend(topology_layout)
+    layout_array.extend(topology_section_layout)
     layout_array.append(html.Hr())
-    layout_array.extend(switch_layout)
+    layout_array.extend(node_section_layout)
     layout_array.append(html.Hr())
-    layout_array.extend(packet_layout)
+    layout_array.extend(packet_section_layout)
 
     return html.Div(layout_array)
 

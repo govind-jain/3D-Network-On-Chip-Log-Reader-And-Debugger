@@ -38,6 +38,9 @@ def network_topology_display(switches, connections):
         z_switches.append(switch_data[2])
         switch_labels.append(f'Switch ID = {switch_data[3]}')
 
+    # Used to assign id to repeaters
+    repeater_counter = len(switches)
+
     for connection_data in connections:
 
         src_switch_id = connection_data[0]
@@ -75,7 +78,8 @@ def network_topology_display(switches, connections):
                     y_repeaters.append(y_curr_node)
                     z_repeaters.append(z_curr_node)
 
-                    repeater_labels.append(f'Repeater ID = {src_switch_id}_{dest_switch_id}_{itr}')
+                    repeater_labels.append(f'Repeater ID = {repeater_counter}')
+                    repeater_counter = repeater_counter + 1
 
                 # Create connection b/w curr_node and prev_node
                 x_coords_start_end_of_indirect_connection = [x_prev_node, x_curr_node, None]
@@ -167,4 +171,5 @@ def network_topology_display(switches, connections):
     )
 
     fig = go.Figure(data=data, layout=layout)
+
     return fig
